@@ -82,10 +82,10 @@ public class WAMClient {
     public void moleAppearance(int mole_num, boolean flag) {
         if (flag) {
             System.out.println(" MOLE " + mole_num + " UP ");
-            this.board.moleAppearance(true);
+            this.board.moleAppearance(mole_num, true);
         } else {
             System.out.println(" MOLE " + mole_num + " DOWN ");
-            this.board.moleAppearance(false);
+            this.board.moleAppearance(mole_num, false);
         }
     }
 
