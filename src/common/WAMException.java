@@ -1,6 +1,5 @@
 package common;
 
-import java.util.StringJoiner;
 
 /**
  * A custom exception class to be thrown by any of the WAM class in the case something
