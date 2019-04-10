@@ -47,7 +47,18 @@ public class WAMPlayer implements WAMProtocol, Closeable {
      *
      * @param moleNum The unique number of the mole that came up.
      */
-    public void moleUp(int moleNum){networkOut.println(MOLE_UP + moleNum);}
+    public String moleUp(int moleNum){
+        networkOut.println(MOLE_UP + moleNum);
+        String whack = networkIn.nextLine();
+
+        if (whack.startsWith(WHACK)){
+            String[] tokens = whack.split(" ");
+            if(tokens.length == 3){
+                return tokens[1] + tokens[2];
+            }
+        }
+
+    }
 
 
 
