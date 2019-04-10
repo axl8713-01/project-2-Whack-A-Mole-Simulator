@@ -82,9 +82,17 @@ public class WAMBoard {
     public void tiedGame() {
         this.status = Status.TIE;
         alert();
+
+     public void error( String err_msg){
+     this.status = Status.ERROR;
+     this.status.setMessage(arguments);
+     alert();
+     }
     }*/
 
     public void close() {
         alert();
     }
+
+
 }

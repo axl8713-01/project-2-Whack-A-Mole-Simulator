@@ -71,12 +71,12 @@ public class WAMClient {
         }
         catch( IOException e ) {
         }
-        //this.board.close();
+        this.board.close();
     }
 
-    public void error( String err ) {
-        System.out.println(" ERROR: " + err );
-        //   this.board.error( err );
+    public void error( String err_msg ) {
+        System.out.println(" ERROR: " + err_msg );
+      //this.board.error( err_msg );
         this.stop();
     }
 
@@ -99,7 +99,6 @@ public class WAMClient {
             try {
                 String proto_msg = this.networkIn.next();
                 String args = this.networkIn.nextLine().trim();
-                //ConnectFourNetworkClient.dPrint( "Net message in = \"" + request + '"' );
 
                 switch ( proto_msg ) {
 
