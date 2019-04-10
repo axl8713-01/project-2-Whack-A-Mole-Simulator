@@ -23,7 +23,7 @@ public class WAMServer implements WAMProtocol, Runnable {
             this.players = players;
             this.duration = duration;
             WAMPlayers = new WAMPlayer[players];
-        }catch (IOException e){}
+        }catch (IOException e){System.out.println("Invalid IO");}
     }
 
     public static void main(String[] args) throws IOException{
@@ -35,6 +35,9 @@ public class WAMServer implements WAMProtocol, Runnable {
         int rows = Integer.parseInt(args[1]);
         int col = Integer.parseInt(args[2]);
         int players = Integer.parseInt(args[3]);
+        if (players < 1){
+            throw new IllegalArgumentException("Minimum number of players cannot be less than 1");
+        }
         int duration = Integer.parseInt(args[4]);
         WAMServer server = new WAMServer(port, rows , col, players, duration);
         server.run();
@@ -50,7 +53,12 @@ public class WAMServer implements WAMProtocol, Runnable {
                 WAMPlayers[i]= player;
                 player.welcome(rows,col,players,i);
             }
-        }catch (IOException e){}
+//            WAMGame game = new WAMGame(rows, col, duration);//implement game logic
+//            new Thread(game).run()//implement game thread here
+
+        }catch (IOException e){System.out.println("Something has gone awry");}
+        //create WAMException?
+
 
     }
 }

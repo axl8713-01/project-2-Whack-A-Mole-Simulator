@@ -38,8 +38,8 @@ public class WAMPlayer implements WAMProtocol, Closeable {
      * @param playerNum clients position
      */
     public void welcome(int rows, int columns, int players, int playerNum) {
-        StringJoiner joiner
-        networkOut.println(WELCOME + rows + columns + players + playerNum);
+
+        networkOut.println(WELCOME + " " + rows + " " + columns + " " + players + " " + playerNum);
     }
 
     /**
@@ -48,6 +48,9 @@ public class WAMPlayer implements WAMProtocol, Closeable {
      * @param moleNum The unique number of the mole that came up.
      */
     public void moleUp(int moleNum){networkOut.println(MOLE_UP + moleNum);}
+
+
+
 
 
 
