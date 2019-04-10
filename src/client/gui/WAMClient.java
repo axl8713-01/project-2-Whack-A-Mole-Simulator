@@ -17,7 +17,7 @@ public class WAMClient {
     private boolean proceed;
     private WAMBoard board;
 
-    public WAMClient(String host, int port)throws WAMException{
+    public WAMClient(String host, int port, WAMBoard board)throws WAMException{
         try {
             this.clientSocket = new Socket(host, port);
             this.networkIn = new Scanner(clientSocket.getInputStream());
@@ -28,7 +28,8 @@ public class WAMClient {
             int columns=this.networkIn.nextInt();
             int num_of_players=this.networkIn.nextInt();
             int player_num=this.networkIn.nextInt();
-            this.board=new WAMBoard(rows, columns);
+            this.board=board;
+            board.sendRnC(rows, columns);
             if (!message.equals(WAMProtocol.WELCOME )) {
                 throw new WAMException("Expected Connect from server");
             }

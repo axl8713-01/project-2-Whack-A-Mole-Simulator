@@ -17,11 +17,15 @@ public class WAMBoard {
 
     private List<Observer<WAMBoard>> observers;
 
+    public void sendRnC(int r, int c){
+        this.ROWS=r;
+        this.COLS=c;
+    }
 
-    public WAMBoard( int rows, int columns){
+    public WAMBoard(){
         this.observers = new LinkedList<>();
-        this.ROWS=rows;
-        this.COLS=columns;
+        this.ROWS=0;
+        this.COLS=0;
         this.board=new boolean[ROWS][COLS];
 
         for(int i=0; i<ROWS; i++){
