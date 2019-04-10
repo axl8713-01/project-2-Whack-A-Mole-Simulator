@@ -1,5 +1,6 @@
 package server;
 
+import common.WAMException;
 import common.WAMProtocol;
 
 import java.io.Closeable;
@@ -47,7 +48,7 @@ public class WAMPlayer implements WAMProtocol, Closeable {
      *
      * @param moleNum The unique number of the mole that came up.
      */
-    public String moleUp(int moleNum){
+    public String moleUp(int moleNum) throws WAMException{
         networkOut.println(MOLE_UP + moleNum);
         String whack = networkIn.nextLine();
 
@@ -56,11 +57,20 @@ public class WAMPlayer implements WAMProtocol, Closeable {
             if(tokens.length == 3){
                 return tokens[1] + tokens[2];
             }
+            else {
+                throw new WAMException("Something went wrong" + whack);
+            }
         }
-
+        else {
+            throw new WAMException("Something went wrong" + whack);
+        }
     }
 
+    public void moleDown(int moleNum){
+        networkOut.println(MOLE_DOWN + moleNum);
+    }
 
+//    public void scores()
 
 
 
