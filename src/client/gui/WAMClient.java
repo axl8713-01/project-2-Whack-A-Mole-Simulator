@@ -1,5 +1,6 @@
 package client.gui;
 
+import common.WAMException;
 import common.WAMProtocol;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class WAMClient {
     private boolean proceed;
     private WAMBoard board;
 
-    public WAMClient(String host, int port)throws Exception{
+    public WAMClient(String host, int port)throws WAMException{
         try {
             this.clientSocket = new Socket(host, port);
             this.networkIn = new Scanner(clientSocket.getInputStream());
@@ -29,12 +30,12 @@ public class WAMClient {
             int player_num=this.networkIn.nextInt();
             this.board=new WAMBoard(rows, columns);
             if (!message.equals(WAMProtocol.WELCOME )) {
-                throw new Exception("Expected Connect from server");
+                throw new WAMException("Expected Connect from server");
             }
             System.out.println("Connected to server " + this.clientSocket);
         }
         catch(IOException e) {
-            e.printStackTrace();
+            throw new WAMException(e);
         }
     }
 
@@ -127,7 +128,6 @@ public class WAMClient {
                 }
             }
             catch( NoSuchElementException nse ) {
-                // Looks like the connection shut down.
                 this.error( "Lost connection to server." );
                 this.stop();
             }

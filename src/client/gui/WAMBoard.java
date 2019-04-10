@@ -1,6 +1,7 @@
 
 package client.gui;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class WAMBoard {
@@ -14,7 +15,11 @@ public class WAMBoard {
     public int ROWS;
     public int COLS;
 
+    private List<Observer<WAMBoard>> observers;
+
+
     public WAMBoard( int rows, int columns){
+        this.observers = new LinkedList<>();
         this.ROWS=rows;
         this.COLS=columns;
         this.board=new boolean[ROWS][COLS];
@@ -31,18 +36,22 @@ public class WAMBoard {
         int c=getCol(mole_num);
         if(flag){
             this.board[r][c]=flag;
-           // alertObservers();
+            alert();
         }
         else{
             this.board[r][c]=flag;
-           // alertObservers();
+            alert();
         }
     }
-   /** public void alertObservers(){
-        for (Observer<WAMBoard> obs: this.observers ) {
-            obs.update(this);
+    public void alert(){
+        for (Observer<WAMBoard> observe: this.observers ) {
+            observe.update(this);
         }
-    }*/
+    }
+
+    public void addObserver(Observer<WAMBoard> observer) {
+        this.observers.add(observer);
+    }
 
     public int getMoleNum(int row, int column){
         return row*COLS+column;
@@ -55,6 +64,27 @@ public class WAMBoard {
         return mole_num%COLS;
     }
 
+    public boolean getMoleHole(int r, int c) {
+        return this.board[r][c];
+    }
 
+    /**
+    public void wonGame() {
+        this.status = Status.I_WON;
+        alert();
+    }
 
+    public void lostGame() {
+        this.status = Status.I_LOST;
+        alert();
+    }
+
+    public void tiedGame() {
+        this.status = Status.TIE;
+        alert();
+    }*/
+
+    public void close() {
+        alert();
+    }
 }
