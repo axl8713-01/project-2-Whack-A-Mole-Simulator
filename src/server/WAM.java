@@ -56,7 +56,7 @@ public class Mole extends Thread{
 
         @Override
     public void run(){
-            game.startHiding(this);
+            game.startHiding();
         }
 
 

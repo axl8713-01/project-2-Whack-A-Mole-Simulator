@@ -41,7 +41,7 @@ public class WAMServer implements WAMProtocol, Runnable {
         }
         int duration = Integer.parseInt(args[4]);
         if (duration < 1){
-            throw new WAMException("Game Duration should be less than 1");
+            throw new WAMException("Game Duration should not be less than 1");
         }
         WAMServer server = new WAMServer(port, rows , col, players, duration);
         server.run();

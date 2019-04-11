@@ -72,6 +72,13 @@ public class WAMPlayer implements WAMProtocol, Closeable {
 
 //    public void scores()
 
-
+    @Override
+    public void close(){
+        try {
+            clientSocket.close();
+        }catch (IOException ioe){
+            //squash
+        }
+    }
 
 }
