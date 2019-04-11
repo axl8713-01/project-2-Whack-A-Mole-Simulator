@@ -57,9 +57,9 @@ public class WAMServer implements WAMProtocol, Runnable {
                 WAMPlayers[i]= player;
                 player.welcome(rows,col,players,i);
             }
-//            WAMGame game = new WAMGame(rows, col, duration);//implement game logic
-//            new Thread(game).run()//implement game thread here
-
+//          WAMGame game = new WAMGame(rows, col, duration, WAMPlayers);//implement game logic
+//          new Thread(game).run()//implement game thread here
+//          join method here
         }catch (IOException e){System.err.println("Invalid IO");}
 //        catch (WAMException e){//will be thrown by the game logic
 //            System.err.println("Failed to connect to clients.");

@@ -76,9 +76,7 @@ public class WAMPlayer implements WAMProtocol, Closeable {
     public void close(){
         try {
             clientSocket.close();
-        }catch (IOException ioe){
-            //squash
-        }
+        }catch (IOException ioe){System.err.println("Something went wrong");}
     }
 
 }

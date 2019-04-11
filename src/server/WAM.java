@@ -5,34 +5,28 @@ public class WAM{
     private final static Integer[] COLS = new Integer[1];
     private int rows;
     private int cols;
-//    private int duration;
+    private int numMoles;
 
-    public WAM(int rows, int cols/*, int duration*/){
+    public WAM(int rows, int cols,){
         this.rows=rows;
         this.cols=cols;
         ROWS[1] = rows;
         COLS[1] = cols;
-//        this.duration=duration;
+        numMoles = rows*cols;
 
 
-    }
-
-    public void run(){
 
     }
 
     public void startHiding(){
-        int total = rows * cols;
-        Thread[] moles = new Thread[total];
-        for (int i = 0 ; i < total; i++){
+        Thread[] moles = new Thread[numMoles];
+        for (int i = 0 ; i < numMoles; i++){
         moles[i]= new Thread(new Mole(i));
+        moles[i].start();
         }
     }
 
     public static void main(String[] args){
-        final int rows = ROWS[0];
-        final int cols = COLS[0];
-        int total = rows * cols;
 
 
 
@@ -42,21 +36,26 @@ public class WAM{
 public class Mole extends Thread{
 
         //This mole thread's unique ID
+        final static int MINUPTIME = 3;
+        final static int MAXUPTIME = 5;
         private int id;
+        private boolean up;
         private WAM game;
 
 
 
         public Mole(int id){
             this.id = id;
-
+            this.up=false;
         }
 
         public int getID(){return id;}
 
+
+
         @Override
-    public void run(){
-            game.startHiding();
+        public void run(){
+
         }
 
 
