@@ -6,6 +6,12 @@ import java.util.List;
 
 public class WAMBoard {
 
+    public enum Result{
+        WON,
+        LOST,
+        TIE,
+        ERROR
+    }
     /**public enum Status{
      WHACKED,
      NOT_WHACKED
@@ -14,6 +20,7 @@ public class WAMBoard {
 
     public int ROWS;
     public int COLS;
+    public Result result;
 
     private List<Observer<WAMBoard>> observers;
 
@@ -68,27 +75,28 @@ public class WAMBoard {
         return mole_num%COLS;
     }
 
-    public boolean getMoleHole(int r, int c) {
+    public boolean getMoleHole(int c, int r) {
         return this.board[r][c];
     }
 
-    /**
+
     public void wonGame() {
-        this.status = Status.I_WON;
+        this.result = Result.WON;
         alert();
     }
 
+/**
     public void lostGame() {
-        this.status = Status.I_LOST;
+        this.result = Result.I_LOST;
         alert();
     }
 
     public void tiedGame() {
-        this.status = Status.TIE;
+        this.result = Result.TIE;
         alert();
 
      public void error( String err_msg){
-     this.status = Status.ERROR;
+     this.result = Result.ERROR;
      this.status.setMessage(arguments);
      alert();
      }
