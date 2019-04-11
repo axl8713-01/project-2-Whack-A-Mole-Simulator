@@ -52,7 +52,7 @@ public class WAMGame implements Runnable {
             while (startTime<duration){
                 startTime++;
             }
-
+        return false;
     }
 
 

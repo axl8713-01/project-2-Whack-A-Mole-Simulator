@@ -7,7 +7,7 @@ public class WAM{
     private int cols;
     private int numMoles;
 
-    public WAM(int rows, int cols,){
+    public WAM(int rows, int cols){
         this.rows=rows;
         this.cols=cols;
         ROWS[1] = rows;
