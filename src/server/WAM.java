@@ -1,6 +1,6 @@
 package server;
 
-public class WAM {
+public class WAM{
     private final static Integer[] ROWS = new Integer[1];
     private final static Integer[] COLS = new Integer[1];
     private int rows;
@@ -17,18 +17,24 @@ public class WAM {
 
     }
 
-    public void startHiding(Mole mole){
+    public void run(){
 
+    }
+
+    public void startHiding(){
+        int total = rows * cols;
+        Thread[] moles = new Thread[total];
+        for (int i = 0 ; i < total; i++){
+        moles[i]= new Thread(new Mole(i));
+        }
     }
 
     public static void main(String[] args){
         final int rows = ROWS[0];
         final int cols = COLS[0];
         int total = rows * cols;
-        Thread[] moles = new Thread[total];
-        for (int i = 0 ; i < total; i++){
-            moles[i]= new Mole(i);
-        }
+
+
 
 
 }
