@@ -20,6 +20,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     private WAMBoard board;
     private GridPane gridPane;
     private Label status;
+    private boolean created=false;
+    private Stage stage;
 
     public void init(){
         try {
@@ -30,8 +32,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             this.board=new WAMBoard();
             this.board.addObserver(this);
             client=new WAMClient(host, port, this.board);
-
             client.startListener();
+
         }
         catch(NumberFormatException e) {
             System.err.println(e);
@@ -39,11 +41,15 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
         }
         catch(WAMException exc){System.err.println(exc);}
     }
-
     public void start(Stage stage){
-        this.gridPane=makeGridPane();
+        this.stage=stage;
+       // client.startListener();
+    }
+
+    public void createGUI(){
+        GridPane gridPane=makeGridPane();
         status=new Label();
-        VBox vBox=new VBox(this.gridPane, status);
+        VBox vBox=new VBox(gridPane, status);
         Scene scene=new Scene(vBox);
         stage.setTitle(" Whack A Mole!");
         stage.setScene(scene);
@@ -52,7 +58,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     }
 
     public GridPane makeGridPane(){
-        GridPane gridPane=new GridPane();
+        gridPane=new GridPane();
         for(int i=0; i<board.COLS; i++){
             for(int j=0; j<board.ROWS; j++){
                 Button button=new Button();
@@ -67,13 +73,13 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
         client.close();
     }
 
-    public void refresh() {
+    public void modifyGUI() {
         for (int i = 0; i < board.COLS; i++) {
             for (int j = 0; j < board.ROWS; j++) {
                 Button b = new Button();
                 if (this.board.getMoleHole(i, j)) {
                     b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-                    this.gridPane.add(b, i, j);
+                    gridPane.add(b, i, j);
                 }
             }
         }
@@ -101,12 +107,16 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     }
 
     public void update(WAMBoard wamboard) {
-        if ( Platform.isFxApplicationThread() ) {
-            this.refresh();
-        }
-        else {
-            Platform.runLater( () -> this.refresh() );
-        }
+
+            Platform.runLater( () -> {
+
+                    createGUI();
+
+                //else{
+                //    modifyGUI();
+                //}
+            });
+
     }
 
     public static void main(String[] args){

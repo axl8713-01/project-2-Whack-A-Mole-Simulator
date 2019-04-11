@@ -27,19 +27,21 @@ public class WAMBoard {
     public void sendRnC(int r, int c){
         this.ROWS=r;
         this.COLS=c;
+        this.board=new boolean[ROWS][COLS];
+        for(int i=0; i<ROWS; i++){
+            for( int j=0; j<COLS; j++){
+                this.board[i][j]= false;
+            }
+        }
     }
 
     public WAMBoard(){
         this.observers = new LinkedList<>();
         this.ROWS=0;
         this.COLS=0;
-        this.board=new boolean[ROWS][COLS];
 
-        for(int i=0; i<ROWS; i++){
-            for( int j=0; j<COLS; j++){
-                this.board[i][j]= false;
-            }
-        }
+
+
     }
 
     public void moleAppearance(int mole_num, boolean flag){

@@ -29,7 +29,7 @@ public class WAMClient {
             int num_of_players=this.networkIn.nextInt();
             int player_num=this.networkIn.nextInt();
             this.board=board;
-            board.sendRnC(rows, columns);
+            this.board.sendRnC(rows, columns);
             if (!message.equals(WAMProtocol.WELCOME )) {
                 throw new WAMException("Expected Connect from server");
             }
@@ -76,7 +76,7 @@ public class WAMClient {
     }
 
     public void error( String err_msg ) {
-        System.out.println(" ERROR: " + err_msg );
+        System.out.println(" ERROR: " + "WAM Client"+err_msg );
       //this.board.error( err_msg );
         this.stop();
     }
