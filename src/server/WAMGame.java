@@ -4,6 +4,12 @@ import common.WAMException;
 
 import java.io.IOException;
 
+/**
+ *
+ * @author Liang, Albin
+ * @author Souza, Saakshi
+ */
+
 
 public class WAMGame implements Runnable {
 

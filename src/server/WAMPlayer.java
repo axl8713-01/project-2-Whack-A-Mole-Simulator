@@ -10,7 +10,11 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.StringJoiner;
 
-
+/**
+ *
+ * @author Liang, Albin
+ * @author Souza, Saakshi
+ */
 
 public class WAMPlayer implements WAMProtocol, Closeable {
 

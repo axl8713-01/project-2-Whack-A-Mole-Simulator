@@ -7,6 +7,12 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ *
+ * @author Liang, Albin
+ * @author Souza, Saakshi
+ */
+
 public class WAMServer implements WAMProtocol, Runnable {
 
     private ServerSocket server;

@@ -9,27 +9,52 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * WAMClient is the controller of the MVC design pattern, it deals with communication between the view and server
+ * and server to model.
+ *
+ * @author Souza, Saakshi
+ * @author Liang, Albin
+ */
+
 public class WAMClient {
 
+    //the logical end point with the server.
     private Socket clientSocket;
+
+    //communication from the server
     private Scanner networkIn;
+
+    //communication to the server
     private PrintStream networkOut;
+
+    //boolean status used to check whether it is appropriate to continue to listen to the server while game is running.
     private boolean proceed;
+
+    //the model that is observed by the view.
     private WAMBoard board;
 
+    /**
+     * the constructor for the controller, it takes in the hostname, port number and the model shared with the view.
+     *
+     * @param host the host name
+     * @param port the port number of the host
+     * @param board the model
+     * @throws WAMException if there is a problem with connecting
+     */
     public WAMClient(String host, int port, WAMBoard board)throws WAMException{
         try {
             this.clientSocket = new Socket(host, port);
             this.networkIn = new Scanner(clientSocket.getInputStream());
             this.networkOut = new PrintStream(clientSocket.getOutputStream());
             this.proceed=true;
-            String message = this.networkIn.next();
+            String message = this.networkIn.next();//receive the pertinent information from server.
             int rows=this.networkIn.nextInt();
             int columns=this.networkIn.nextInt();
             int num_of_players=this.networkIn.nextInt();
             int player_num=this.networkIn.nextInt();
             this.board=board;
-            this.board.sendRnC(rows, columns);
+            this.board.sendRnC(rows, columns);//send the rows and columns to the model
             if (!message.equals(WAMProtocol.WELCOME )) {
                 throw new WAMException("Expected Connect from server");
             }
@@ -40,32 +65,57 @@ public class WAMClient {
         }
     }
 
+    /**
+     * simple helper function to check whether the game is still running.
+     *
+     * @return true if the game is still on, false otherwise.
+     */
     private synchronized boolean shouldGameProceed() {
         return this.proceed;
     }
 
+    /**
+     * lets the controller know to stop
+     *
+     */
     private synchronized void stop() {
         this.proceed = false;
     }
 
+    /**
+     * The game has ended, we won, call the stop method, begin clean up.
+     *
+     */
     public void wonGame() {
         System.out.println(" YOU WON! ");
         // this.board.wonGame();
         this.stop();
     }
+
+    /**
+     * The game has ended, we lost, call the stop method, begin clean up.
+     *
+     */
     public void lostGame() {
         System.out.println(" YOU LOST! ");
         //  this.board.lostGame();
         this.stop();
     }
 
+    /**
+     * The game has ended, we tied, call the stop method, begin clean up.
+     *
+     */
     public void tiedGame() {
         System.out.println(" TIED GAME! ");
         //  this.board.tiedGame();
         this.stop();
     }
 
-
+    /**
+     * close out the controller by closing the socket, then call the models close method.
+     *
+     */
     public void close() {
         try {
             this.clientSocket.close();
@@ -75,12 +125,24 @@ public class WAMClient {
         this.board.close();
     }
 
+    /**
+     * method for dealing with error messages from the server.
+     *
+     * @param err_msg the error message
+     */
     public void error( String err_msg ) {
-        System.out.println(" ERROR: " + "WAM Client"+err_msg );
+        System.out.println(" ERROR: " + err_msg );
       //this.board.error( err_msg );
         this.stop();
     }
 
+    /**
+     * moleAppearance is called whenever the server lets us know that there is mole movement. We then let the model
+     * know that a mole has moved.
+     *
+     * @param mole_num the number of the mole
+     * @param flag whether it is going up or down
+     */
     public void moleAppearance(int mole_num, boolean flag) {
         if (flag) {
             System.out.println(" MOLE " + mole_num + " UP ");
@@ -91,14 +153,23 @@ public class WAMClient {
         }
     }
 
+    /**
+     * the method called by the view to begin the controller thread.
+     *
+     */
     public void startListener() {
         new Thread(() -> this.run()).start();
     }
 
+    /**
+     * the main loop of the controller thread that deals with incoming traffic from the server. It parses the message
+     * from server and deals with it appropriately. It runs until the proceed is false.
+     *
+     */
     private void run() {
         while (this.shouldGameProceed()) {
             try {
-                String proto_msg = this.networkIn.next();
+                String proto_msg = this.networkIn.next();// the message from server
                 String args = this.networkIn.nextLine().trim();
 
                 switch ( proto_msg ) {

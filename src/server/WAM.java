@@ -1,5 +1,11 @@
 package server;
 
+/**
+ *
+ * @author Liang, Albin
+ * @author Souza, Saakshi
+ */
+
 public class WAM{
     private final static Integer[] ROWS = new Integer[1];
     private final static Integer[] COLS = new Integer[1];

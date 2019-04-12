@@ -5,7 +5,8 @@ package common;
  * A custom exception class to be thrown by any of the WAM class in the case something
  * goes awry.
  *
- *
+ * @author Liang, Albin
+ * @author Souza, Saakshi
  */
 public class WAMException extends Exception{
 
