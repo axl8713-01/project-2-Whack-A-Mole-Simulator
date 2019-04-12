@@ -78,7 +78,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             for (int j = 0; j < board.ROWS; j++) {
                 Button b = new Button();
                 if (this.board.getMoleHole(i, j)) {
-                    b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                    b.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
                     gridPane.add(b, i, j);
                 }
             }
@@ -109,12 +109,13 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     public void update(WAMBoard wamboard) {
 
             Platform.runLater( () -> {
-
+                if(!created) {
                     createGUI();
-
-                //else{
-                //    modifyGUI();
-                //}
+                    created=true;
+                }
+                else{
+                    modifyGUI();
+                }
             });
 
     }
