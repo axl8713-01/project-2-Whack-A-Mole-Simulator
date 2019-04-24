@@ -196,6 +196,9 @@ public class WAMClient {
                     case WAMProtocol.MOLE_DOWN:
                         moleAppearance(Integer.parseInt(args), false);
                         break;
+                    case WAMProtocol.SCORE:
+                        sendScore(args);
+                        break;
                     default:
                         System.err.println("Unrecognized request: " + proto_msg);
                         this.stop();
@@ -215,27 +218,12 @@ public class WAMClient {
     }
 
 
+public void sendScore(String score){
+        this.board.getScore(score);
+}
 
-
-    public String Whacked(int row, int col){
+    public void Whacked(int row, int col){
             networkOut.println(WAMProtocol.WHACK+" "+board.getMoleNum(row, col)+" "+player_num);
             networkOut.flush();
-            String mole_state=networkIn.next();
-            int mole_num=networkIn.nextInt();
-            if(mole_state.equals(WAMProtocol.MOLE_DOWN)){
-                moleAppearance(mole_num,false);
-                String[] score=networkIn.nextLine().split(" ");
-                String s="";
-                for(int i=1; i<=this.num_of_players; i++){
-                    s+=score[i]+ " ";
-                }
-                if(score[0].equals(WAMProtocol.SCORE)){
-                    return s.trim();
-                }
-            }else{
-                this.error("Wrong message from server."+mole_state);
-                this.stop();
-            }
-            return(WAMProtocol.ERROR);
         }
     }

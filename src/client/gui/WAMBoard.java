@@ -41,6 +41,8 @@ public class WAMBoard {
     //the results that end the game.
     public Result result;
 
+    public String score;
+
     //the list of observers, in this case the WAMGUI.
     private List<Observer<WAMBoard>> observers;
 
@@ -72,6 +74,7 @@ public class WAMBoard {
         this.observers = new LinkedList<>();
         this.ROWS=0;
         this.COLS=0;
+        score="";
 
     }
 
@@ -181,6 +184,10 @@ public class WAMBoard {
     public void error(String err_msg){
      this.result = Result.ERROR;
      alert();
+    }
+
+    public void getScore(String score){
+        this.score=score;
     }
 
     /**

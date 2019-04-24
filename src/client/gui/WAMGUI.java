@@ -148,27 +148,16 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                     b.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
 
                     b.setOnAction(actionEvent -> {
-                        String score_msg=client.Whacked(finalJ, finalI);
-                        if(score_msg.equals(WAMProtocol.ERROR)){
-                            this.status.setText(" ERROR ");
-                            endGame();
-                        }else{
-                                this.score.setText(score_msg);
-                        }
-
+                        client.Whacked(finalJ, finalI);
+                        this.score.setText(this.board.score);
                     });
                     gridPane.add(b, i, j);
                 }
                 else {//else mole is down
                     b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
                     b.setOnAction(actionEvent -> {
-                       String score_msg= client.Whacked(finalJ,finalI);
-                        if(score_msg.equals(WAMProtocol.ERROR)){
-                            this.status.setText(" ERROR ");
-                            endGame();
-                        }else{
-                                this.score.setText(score_msg);
-                        }
+                       client.Whacked(finalJ,finalI);
+                       this.score.setText(this.board.score);
                     });
                     gridPane.add(b, i, j);
                 }
