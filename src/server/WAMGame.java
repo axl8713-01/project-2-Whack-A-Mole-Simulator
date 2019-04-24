@@ -31,26 +31,27 @@ public class WAMGame implements Runnable {
         this.cols = cols;
         this.duration=duration;
         this.players = players;
+        this.game = new WAM(rows, cols);
 
     }
 
     @Override
     public void run(){
 
-        game = new WAM(rows, cols);
-        while(true){
+        boolean running = true;
+        while(running){
+            int currentTimeElapsed = 0;
             game.startHiding();
-            if (timeUp()){
-                for (WAMPlayer player : players){
+            for (WAMPlayer player : players){
 //                    player.score();
-                    try {
-                        player.close();
-                    }catch (Exception e){}
-                }break;
+                try {
+                    player.close();
+                }catch (Exception e){}
             }
-            else {
-                break;
+            if (currentTimeElapsed >= duration){
+                running=false;
             }
+            currentTimeElapsed++;
         }
     }
 
@@ -61,6 +62,7 @@ public class WAMGame implements Runnable {
             }
         return false;
     }
+
 
 
 

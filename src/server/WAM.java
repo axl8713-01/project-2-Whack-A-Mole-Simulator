@@ -34,12 +34,18 @@ public class WAM{
     public void startHiding(){
         Thread[] moles = new Thread[numMoles];
         for (int i = 0 ; i < numMoles; i++){
-        moles[i]= new Thread(new Mole(i));
-        moles[i].start();
+            moles[i]= new Thread(new Mole(i));
+            moles[i].start();
         }
     }
 
-    public int getUpTime(int min, int max) {return rng.nextInt(max-min + 1 ) + min;}
+    public void appear(int id){
+
+    }
+
+
+    public int getRandomTime(int min, int max) {return rng.nextInt(max-min + 1 ) + min;}
+
 
 
     public static void main(String[] args){
@@ -50,8 +56,10 @@ public class WAM{
 public class Mole extends Thread{
 
         //This mole thread's unique ID
-        final static int MINUPTIME = 3;
-        final static int MAXUPTIME = 5;
+        private final static int MINUPTIME = 3;
+        private final static int MAXUPTIME = 5;
+        private final static int MINDOWNTIME = 2;
+        private final static int MAXDOWNTIME = 10;
         private int id;
         private boolean up;
         private WAM game;
@@ -70,9 +78,14 @@ public class Mole extends Thread{
 
         @Override
         public void run(){
+            try {
+                this.sleep(getRandomTime(MINDOWNTIME, MAXDOWNTIME));
+                this.up = true;
+                this.sleep(getRandomTime(MINUPTIME, MAXUPTIME));
+                this.up = false;
 
-        }
+            }catch(InterruptedException ie){}
 
 
     }
-}
+}}
