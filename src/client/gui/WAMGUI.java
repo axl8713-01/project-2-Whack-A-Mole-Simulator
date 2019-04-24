@@ -38,8 +38,6 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
 
     private Label score;
 
-    private Label time;
-
     //created is used to tell if the board has been created or not initially.
     private boolean created=false;
 
@@ -95,11 +93,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
         GridPane gridPane=makeGridPane();
         status=new Label();
         score=new Label();
-        time=new Label();
-        score.setText("0 0 0");
-        time.setText("00:00");
-        HBox hBox=new HBox(status, time);
-        VBox vBox=new VBox(hBox, gridPane, score);
+        HBox hBox=new HBox(status, score);
+        VBox vBox=new VBox(hBox, gridPane);
         Scene scene=new Scene(vBox);
         stage.setTitle(" Whack A Mole!");
         stage.setScene(scene);
@@ -162,26 +157,10 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                     gridPane.add(b, i, j);
                 }
             }
-        }/**AMBoard.Result res=board.result;
-        switch(res){
-            case WON:
-                this.status.setText(" YOU WON ");
-                endGame();
-                break;
-            case LOST:
-                this.status.setText(" YOU LOST ");
-                endGame();
-                break;
-            case TIE:
-                this.status.setText(" TIED GAME ");
-                endGame();
-                break;
-            case ERROR:
-                this.status.setText(" ERROR ");
-                endGame();
-                break;
-            default:
-                break;*/
+        }
+        if(!this.board.proceed){
+            status.setText(board.result+"");
+        }
         }
 
 

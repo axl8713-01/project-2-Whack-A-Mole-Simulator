@@ -43,6 +43,8 @@ public class WAMBoard {
 
     public String score;
 
+    public boolean proceed=true;
+
     //the list of observers, in this case the WAMGUI.
     private List<Observer<WAMBoard>> observers;
 
@@ -169,20 +171,24 @@ public class WAMBoard {
      */
     public void wonGame() {
         this.result = Result.WON;
+        this.proceed=false;
         alert();
     }
 
     public void lostGame() {
         this.result = Result.LOST;
+        this.proceed=false;
         alert();
     }
 
     public void tiedGame() {
         this.result = Result.TIE;
+        this.proceed=false;
         alert();
     }
     public void error(String err_msg){
      this.result = Result.ERROR;
+     this.proceed=false;
      alert();
     }
 
