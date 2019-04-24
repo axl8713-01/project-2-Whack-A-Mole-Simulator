@@ -34,6 +34,10 @@ public class WAMClient {
     //the model that is observed by the view.
     private WAMBoard board;
 
+    private int player_num;
+
+    private int num_of_players;
+
     /**
      * the constructor for the controller, it takes in the hostname, port number and the model shared with the view.
      *
@@ -51,8 +55,8 @@ public class WAMClient {
             String message = this.networkIn.next();//receive the pertinent information from server.
             int rows=this.networkIn.nextInt();
             int columns=this.networkIn.nextInt();
-            int num_of_players=this.networkIn.nextInt();
-            int player_num=this.networkIn.nextInt();
+            this.num_of_players=this.networkIn.nextInt();
+            this.player_num=this.networkIn.nextInt();
             this.board=board;
             this.board.sendRnC(rows, columns);//send the rows and columns to the model
             if (!message.equals(WAMProtocol.WELCOME )) {
@@ -88,7 +92,7 @@ public class WAMClient {
      */
     public void wonGame() {
         System.out.println(" YOU WON! ");
-        // this.board.wonGame();
+        this.board.wonGame();
         this.stop();
     }
 
@@ -98,7 +102,7 @@ public class WAMClient {
      */
     public void lostGame() {
         System.out.println(" YOU LOST! ");
-        //  this.board.lostGame();
+        this.board.lostGame();
         this.stop();
     }
 
@@ -108,7 +112,7 @@ public class WAMClient {
      */
     public void tiedGame() {
         System.out.println(" TIED GAME! ");
-        //  this.board.tiedGame();
+        this.board.tiedGame();
         this.stop();
     }
 
@@ -132,7 +136,7 @@ public class WAMClient {
      */
     public void error( String err_msg ) {
         System.out.println(" ERROR: " + err_msg );
-      //this.board.error( err_msg );
+        this.board.error( err_msg );
         this.stop();
     }
 
@@ -209,4 +213,28 @@ public class WAMClient {
         }
         this.close();
     }
-}
+
+
+
+
+    public String Whacked(int row, int col){
+            networkOut.println(WAMProtocol.WHACK+" "+board.getMoleNum(row, col)+" "+player_num);
+            String mole_state=networkIn.next();
+            int mole_num=networkIn.nextInt();
+            if(mole_state.equals(WAMProtocol.MOLE_DOWN)){
+                moleAppearance(mole_num,false);
+                String[] score=networkIn.nextLine().split(" ");
+                String s="";
+                for(int i=1; i<=this.num_of_players; i++){
+                    s+=score[i]+ " ";
+                }
+                if(score[0].equals(WAMProtocol.SCORE)){
+                    return s.trim();
+                }
+            }else{
+                this.error("Wrong message from server."+mole_state);
+                this.stop();
+            }
+            return(WAMProtocol.ERROR);
+        }
+    }

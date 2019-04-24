@@ -169,22 +169,19 @@ public class WAMBoard {
         alert();
     }
 
-/**
     public void lostGame() {
-        this.result = Result.I_LOST;
+        this.result = Result.LOST;
         alert();
     }
 
     public void tiedGame() {
         this.result = Result.TIE;
         alert();
-
-     public void error( String err_msg){
+    }
+    public void error(String err_msg){
      this.result = Result.ERROR;
-     this.status.setMessage(arguments);
      alert();
-     }
-    }*/
+    }
 
     /**
      * close out the model, and alert the view one last time.

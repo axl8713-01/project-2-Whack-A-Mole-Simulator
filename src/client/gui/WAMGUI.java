@@ -1,15 +1,13 @@
 package client.gui;
 
 import common.WAMException;
+import common.WAMProtocol;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -21,7 +19,7 @@ import java.util.List;
  *  and it is the interface in which users use to play the game.
  *
  *
- * @author Souza, Saakshi
+ * @author D'Souza, Saakshi
  * @author Liang, Albin
  */
 
@@ -37,6 +35,10 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
 
     //status is a label to represent the status of the game(currently just a placeholder)
     private Label status;
+
+    private Label score;
+
+    private Label time;
 
     //created is used to tell if the board has been created or not initially.
     private boolean created=false;
@@ -92,7 +94,12 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     public void createGUI(){
         GridPane gridPane=makeGridPane();
         status=new Label();
-        VBox vBox=new VBox(gridPane, status);
+        score=new Label();
+        time=new Label();
+        score.setText("0 0 0");
+        time.setText("00:00");
+        HBox hBox=new HBox(status, time);
+        VBox vBox=new VBox(hBox, gridPane, score);
         Scene scene=new Scene(vBox);
         stage.setTitle(" Whack A Mole!");
         stage.setScene(scene);
@@ -133,43 +140,69 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     public void modifyGUI() {
         for (int i = 0; i < board.COLS; i++) {
             for (int j = 0; j < board.ROWS; j++) {
+                int finalI = i;
+                int finalJ = j;
                 Button b = new Button();
                 b.setPrefSize(150,150);
                 if (this.board.getMoleHole(i, j)) {//if true, mole is up
                     b.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+
+                    b.setOnAction(actionEvent -> {
+                        String score_msg=client.Whacked(finalJ, finalI);
+                        if(score_msg.equals(WAMProtocol.ERROR)){
+                            this.status.setText(" ERROR ");
+                            endGame();
+                        }else{
+                                this.score.setText(score_msg);
+                        }
+
+                    });
                     gridPane.add(b, i, j);
                 }
                 else {//else mole is down
                     b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                    b.setOnAction(actionEvent -> {
+                       String score_msg= client.Whacked(finalJ,finalI);
+                        if(score_msg.equals(WAMProtocol.ERROR)){
+                            this.status.setText(" ERROR ");
+                            endGame();
+                        }else{
+                                this.score.setText(score_msg);
+                        }
+                    });
                     gridPane.add(b, i, j);
                 }
             }
         }
-//        WAMBoard.Result res=board.result;
-//        switch(res){
-//            case WON:
-//                this.status.setText(" YOU WON ");
-//                //endGame();
-//                break;
-//            case LOST:
-//                this.status.setText(" YOU LOST ");
-//                //endGame();
-//                break;
-//            case TIE:
-//                this.status.setText(" TIED GAME ");
-//                //endGame();
-//                break;
-//            default:
-//                break;
-//        }
+        WAMBoard.Result res=board.result;
+        switch(res){
+            case WON:
+                this.status.setText(" YOU WON ");
+                endGame();
+                break;
+            case LOST:
+                this.status.setText(" YOU LOST ");
+                endGame();
+                break;
+            case TIE:
+                this.status.setText(" TIED GAME ");
+                endGame();
+                break;
+            case ERROR:
+                this.status.setText(" ERROR ");
+                endGame();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
      * endgame wakes up all the other threads after the game has ended. Placeholder currently*
      */
-//    public void endGame(){
-//        this.notifyAll();
-//    }
+    public void endGame(){
+        this.notifyAll();
+    }
 
 
     /**
@@ -182,7 +215,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             Platform.runLater( () -> {//The model cannot change the nodes in the JavaFX thread directly.
                 if(!created) {//if it's the first time, create the board.
                     createGUI();
-                    created=true;//it's been created, set it to false.
+                    created=true;//it's been created, set it to true.
                 }
                 else{
                     modifyGUI();
