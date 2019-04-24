@@ -173,8 +173,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                     gridPane.add(b, i, j);
                 }
             }
-        }
-        WAMBoard.Result res=board.result;
+        }/**AMBoard.Result res=board.result;
         switch(res){
             case WON:
                 this.status.setText(" YOU WON ");
@@ -193,9 +192,9 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                 endGame();
                 break;
             default:
-                break;
+                break;*/
         }
-    }
+
 
     /**
      * endgame wakes up all the other threads after the game has ended. Placeholder currently*

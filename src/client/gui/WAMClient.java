@@ -219,6 +219,7 @@ public class WAMClient {
 
     public String Whacked(int row, int col){
             networkOut.println(WAMProtocol.WHACK+" "+board.getMoleNum(row, col)+" "+player_num);
+            networkOut.flush();
             String mole_state=networkIn.next();
             int mole_num=networkIn.nextInt();
             if(mole_state.equals(WAMProtocol.MOLE_DOWN)){
