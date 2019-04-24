@@ -13,7 +13,7 @@ import java.net.Socket;
  * @author Souza, Saakshi
  */
 
-public class WAMServer implements WAMProtocol, Runnable {
+public class WAMServer extends Thread implements WAMProtocol {
 
     private ServerSocket server;
     private int rows;
@@ -50,29 +50,34 @@ public class WAMServer implements WAMProtocol, Runnable {
             throw new WAMException("Game Duration should not be less than 1");
         }
         WAMServer server = new WAMServer(port, rows , col, players, duration);
-        server.run();
+        Thread serverThread = new Thread(server);
+        serverThread.start();
+
+
 
     }
     @Override
     public void run(){
         try {
-            for (int i=0 ; i<players; i++){
+            for (int i = 0; i < players; i++) {
                 System.out.println("Waiting for player " + i);
                 Socket playerSocket = server.accept();
                 WAMPlayer player = new WAMPlayer(playerSocket);
-                WAMPlayers[i]= player;
-                player.welcome(rows,col,players,i);
+                WAMPlayers[i] = player;
+                player.welcome(rows, col, players, i);
             }
-//          WAMGame game = new WAMGame(rows, col, duration, WAMPlayers);//implement game logic
-//          new Thread(game).run()//implement game thread here
-//          join method here
-        }catch (IOException e){System.err.println("Invalid IO");}
-//        catch (WAMException e){//will be thrown by the game logic
-//            System.err.println("Failed to connect to clients.");
-//            e.printStackTrace();
-//        }
-
+            WAMGame game = new WAMGame(rows, col, duration, WAMPlayers);//implement game logic
+            new Thread(game).run();//implement game thread here
+            this.sleep(duration*1000);
+        }catch (IOException e){ System.err.println("Invalid IO");}
+        catch (InterruptedException ie){ this.interrupt(); }
+//        catch (WAMException we){
+//            System.err.println("Something has gone horrible awry.");
+//            we.printStackTrace();
+//            for (WAMPlayer wamPlayers: WAMPlayers) {
+//                wamPlayers.error();
+//            }
+        }
 
 
     }
-}

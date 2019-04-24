@@ -23,6 +23,8 @@ public class WAMGame implements Runnable {
 
     private WAMPlayer[] players;
 
+
+
     public WAMGame(int rows, int cols, int duration, WAMPlayer... players){
 
         this.rows = rows;
@@ -34,7 +36,7 @@ public class WAMGame implements Runnable {
 
     @Override
     public void run(){
-        //accept player whacks here?
+
         game = new WAM(rows, cols);
         while(true){
             game.startHiding();
@@ -42,7 +44,6 @@ public class WAMGame implements Runnable {
                 for (WAMPlayer player : players){
 //                    player.score();
                     try {
-
                         player.close();
                     }catch (Exception e){}
                 }break;

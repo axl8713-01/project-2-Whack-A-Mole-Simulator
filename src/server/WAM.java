@@ -1,5 +1,7 @@
 package server;
 
+import java.util.Random;
+
 /**
  *
  * @author Liang, Albin
@@ -12,6 +14,10 @@ public class WAM{
     private int rows;
     private int cols;
     private int numMoles;
+    private final static Random rng = new Random();
+    private final static int SEED = 0;
+
+
 
     public WAM(int rows, int cols){
         this.rows=rows;
@@ -19,6 +25,7 @@ public class WAM{
         ROWS[1] = rows;
         COLS[1] = cols;
         numMoles = rows*cols;
+        this.rng.setSeed(SEED);
 
 
 
@@ -32,13 +39,14 @@ public class WAM{
         }
     }
 
+    public int getUpTime(int min, int max) {return rng.nextInt(max-min + 1 ) + min;}
+
+
     public static void main(String[] args){
 
 
 
-
-}
-
+    }
 public class Mole extends Thread{
 
         //This mole thread's unique ID
@@ -56,6 +64,7 @@ public class Mole extends Thread{
         }
 
         public int getID(){return id;}
+
 
 
 
