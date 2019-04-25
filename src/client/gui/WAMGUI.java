@@ -119,8 +119,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             for(int j=0; j<board.ROWS; j++){
                 Button button=new Button();
                 button.setPrefSize(150,150);
-                //button.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-                button.setGraphic(hole);
+                button.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+               // button.setGraphic(hole);
                 gridPane.add(button, i,j);
             }
         }
