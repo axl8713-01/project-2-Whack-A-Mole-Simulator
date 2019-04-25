@@ -65,6 +65,7 @@ public class WAMServer extends Thread implements WAMProtocol {
                 WAMPlayer player = new WAMPlayer(playerSocket);
                 WAMPlayers[i] = player;
                 player.welcome(rows, col, players, i);
+                player.startListening();
             }
             WAMGame game = new WAMGame(rows, col, duration, WAMPlayers);//implement game logic
             new Thread(game).run();//implement game thread here

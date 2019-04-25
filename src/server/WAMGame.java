@@ -23,6 +23,10 @@ public class WAMGame implements Runnable {
 
     private WAMPlayer[] players;
 
+    private WAM.Mole[] moles;
+
+    private Integer[] scores;
+
 
 
     public WAMGame(int rows, int cols, int duration, WAMPlayer... players){
@@ -31,8 +35,13 @@ public class WAMGame implements Runnable {
         this.cols = cols;
         this.duration=duration;
         this.players = players;
-        this.game = new WAM(rows, cols);
+        this.game = new WAM(this.rows, this.cols);
+        this.scores = new Integer[players.length];
 
+    }
+
+
+    public synchronized void score(int playerNum, int moleNum){
     }
 
     @Override

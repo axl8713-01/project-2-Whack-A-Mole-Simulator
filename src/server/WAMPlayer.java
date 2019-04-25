@@ -16,11 +16,13 @@ import java.util.StringJoiner;
  * @author Souza, Saakshi
  */
 
-public class WAMPlayer implements WAMProtocol, Closeable {
+public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
     private Socket clientSocket;
     private Scanner networkIn;
     private PrintStream networkOut;
+    private boolean gameOn;
+
 
 
     /**
@@ -29,7 +31,7 @@ public class WAMPlayer implements WAMProtocol, Closeable {
     public WAMPlayer (Socket socket) throws IOException{
         this.clientSocket = socket;
         try {
-            networkIn = new Scanner(clientSocket.getInputStream()); //From Server Side
+            networkIn = new Scanner(clientSocket.getInputStream()); //From Client Side
             networkOut = new PrintStream(clientSocket.getOutputStream());//To the client
         }catch (IOException e){}
     }
@@ -52,7 +54,7 @@ public class WAMPlayer implements WAMProtocol, Closeable {
      *
      * @param moleNum The unique number of the mole that came up.
      */
-    public String moleUp(int moleNum) throws WAMException{
+    public synchronized String moleUp(int moleNum) throws WAMException{
         networkOut.println(MOLE_UP + moleNum);
         String whack = networkIn.nextLine();
 
@@ -70,7 +72,7 @@ public class WAMPlayer implements WAMProtocol, Closeable {
         }
     }
 
-    public void moleDown(int moleNum){
+    public synchronized void moleDown(int moleNum){
         networkOut.println(MOLE_DOWN + moleNum);
     }
 
@@ -81,7 +83,20 @@ public class WAMPlayer implements WAMProtocol, Closeable {
         this.close();
     }
 
+    public void startListening(){ new Thread(() -> this.run()).start();}
 
+    @Override
+    public void run() {
+        while (true) {
+            if (!this.gameOn) {
+                break;
+            }
+            String[] whack = networkIn.nextLine().split(" ");
+
+
+        }
+        close();
+    }
     @Override
     public void close(){
         try {
