@@ -7,6 +7,8 @@ import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -37,6 +39,9 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     private Label status;
 
     private Label score;
+
+    //private ImageView hole=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
+    //private ImageView mole=new ImageView(new Image(getClass().getResourceAsStream("mole.png")));
 
     //created is used to tell if the board has been created or not initially.
     private boolean created=false;
@@ -114,7 +119,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             for(int j=0; j<board.ROWS; j++){
                 Button button=new Button();
                 button.setPrefSize(150,150);
-                button.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                //button.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                button.setGraphic(hole);
                 gridPane.add(button, i,j);
             }
         }
@@ -141,7 +147,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                 b.setPrefSize(150,150);
                 if (this.board.getMoleHole(i, j)) {//if true, mole is up
                     b.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-
+                   // b.setGraphic(mole);
                     b.setOnAction(actionEvent -> {
                         client.Whacked(finalJ, finalI);
                         this.score.setText(this.board.score);
@@ -150,6 +156,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                 }
                 else {//else mole is down
                     b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                  //  b.setGraphic(hole);
                     b.setOnAction(actionEvent -> {
                        client.Whacked(finalJ,finalI);
                        this.score.setText(this.board.score);
