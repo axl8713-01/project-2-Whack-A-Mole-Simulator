@@ -19,11 +19,13 @@ public class WAMGame implements Runnable {
 
     private int duration;
 
+    private int numMoles;
+
     private WAM game;
 
     private WAMPlayer[] players;
 
-    private WAM.Mole[] moles;
+    private Mole[] moles;
 
     private Integer[] scores;
 
@@ -35,13 +37,30 @@ public class WAMGame implements Runnable {
         this.cols = cols;
         this.duration=duration;
         this.players = players;
-        this.game = new WAM(this.rows, this.cols);
+        int totalNumofmoles = rows*cols;
+//        this.game = new WAM(this.rows, this.cols);
         this.scores = new Integer[players.length];
+//        this.moles = game.startHiding();
 
     }
 
 
     public synchronized void score(int playerNum, int moleNum){
+        if(moles[moleNum].getStatus()){
+            scores[playerNum] += 2;
+        }
+        else {
+            scores[playerNum] -= 1;
+        }
+    }
+
+    public Mole[] startHiding() {
+        Mole[] moles = new Mole[numMoles];
+        for (int i = 0; i < numMoles; i++) {
+            moles[i] = new Mole(i);
+            moles[i].start();
+        }
+        return moles;
     }
 
     @Override

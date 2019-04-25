@@ -93,7 +93,6 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
             }
             String[] whack = networkIn.nextLine().split(" ");
 
-
         }
         close();
     }
