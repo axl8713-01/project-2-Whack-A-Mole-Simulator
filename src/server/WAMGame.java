@@ -4,6 +4,8 @@ import common.WAMException;
 
 import java.io.IOException;
 
+import static common.WAMProtocol.SCORE;
+
 /**
  *
  * @author Liang, Albin
@@ -19,15 +21,17 @@ public class WAMGame implements Runnable {
 
     private int duration;
 
-    private int numMoles;
-
-    private WAM game;
+//    private WAM game;
 
     private WAMPlayer[] players;
 
+    private Integer[] scores;
+
+    private int numMoles;
+
     private Mole[] moles;
 
-    private Integer[] scores;
+
 
 
 
@@ -35,32 +39,63 @@ public class WAMGame implements Runnable {
 
         this.rows = rows;
         this.cols = cols;
-        this.duration=duration;
+        this.duration = duration;
         this.players = players;
-        int totalNumofmoles = rows*cols;
-//        this.game = new WAM(this.rows, this.cols);
         this.scores = new Integer[players.length];
+        this.numMoles = rows*cols;
+        this.moles = startHiding();
+//        this.game = new WAM(this.rows, this.cols);
+
 //        this.moles = game.startHiding();
 
     }
 
 
-    public synchronized void score(int playerNum, int moleNum){
+    public synchronized void score(String scoreMsg){
+        String[]
         if(moles[moleNum].getStatus()){
             scores[playerNum] += 2;
         }
         else {
             scores[playerNum] -= 1;
         }
+
+        for (WAMPlayer player: players){
+            player.sendScores(tallyScores());
+        }
     }
 
     public Mole[] startHiding() {
         Mole[] moles = new Mole[numMoles];
         for (int i = 0; i < numMoles; i++) {
-            moles[i] = new Mole(i);
+            moles[i] = new Mole(i, this);
             moles[i].start();
         }
         return moles;
+    }
+
+    public String tallyScores(){
+        StringBuilder scores = new StringBuilder();
+        scores.append(SCORE);
+        for (int i = 0; i<players.length; i++){
+            scores.append(" ");
+            scores.append(this.scores[i]);
+        }
+        String scoreboard = scores.toString();
+        return scoreboard;
+    }
+
+    public synchronized void popUp(int id)throws WAMException{
+        for (WAMPlayer player: players){
+            String moleup = player.moleUp(id);
+            score(moleup);
+        }
+    }
+
+    public synchronized void hide (int id) throws WAMException{
+        for (WAMPlayer player : players){
+
+        }
     }
 
     @Override
@@ -69,7 +104,6 @@ public class WAMGame implements Runnable {
         boolean running = true;
         while(running){
             int currentTimeElapsed = 0;
-            game.startHiding();
             for (WAMPlayer player : players){
 //                    player.score();
                 try {

@@ -72,11 +72,17 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         }
     }
 
-    public synchronized void moleDown(int moleNum){
+//    public synchronized void moleDown(int moleNum){
+//        networkOut.println(MOLE_DOWN + moleNum);
+//    }
+    public synchronized void moleDown(int moleNum)throws WAMException{
         networkOut.println(MOLE_DOWN + moleNum);
     }
 
-//    public void scores()
+
+    public void sendScores(String scoreBoard){
+        networkOut.println(scoreBoard);
+    }
 
     public void error(){
         networkOut.println(ERROR);
@@ -84,6 +90,8 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     }
 
     public void startListening(){ new Thread(() -> this.run()).start();}
+
+
 
     @Override
     public void run() {

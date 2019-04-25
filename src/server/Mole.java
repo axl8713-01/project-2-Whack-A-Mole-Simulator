@@ -1,5 +1,7 @@
 package server;
 
+import common.WAMException;
+
 import java.util.Random;
 
 public class Mole extends Thread{
@@ -22,12 +24,14 @@ public class Mole extends Thread{
 
     private boolean up;
 
+    private WAMGame game;
 
 
-    public Mole(int id){
+    public Mole(int id, WAMGame game) {
         this.id = id;
         this.up = false;
         this.rng.setSeed(SEED);
+        this.game = game;
     }
 
     public int getID(){return id;}
@@ -44,17 +48,17 @@ public class Mole extends Thread{
 
     public int getRandomTime(int min, int max) {return rng.nextInt(max-min + 1 ) + min;}
 
-
     @Override
     public void run(){
-        try {
-            this.sleep(getRandomTime(MINDOWNTIME, MAXDOWNTIME));
-            this.up = true;
-            this.sleep(getRandomTime(MINUPTIME, MAXUPTIME));
-            this.up = false;
-
-        }catch(InterruptedException ie){}
-
-
+        while (true) {
+            try {
+                this.sleep(getRandomTime(MINDOWNTIME, MAXDOWNTIME));
+                this.up = true;
+                game.popUp(this.getID());
+                this.sleep(getRandomTime(MINUPTIME, MAXUPTIME));
+                this.up = false;
+            } catch (InterruptedException ie) {}
+            catch (WAMException we){}
+        }
     }
 }
