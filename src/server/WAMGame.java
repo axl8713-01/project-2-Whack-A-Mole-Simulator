@@ -101,8 +101,18 @@ public class WAMGame implements Runnable {
 
 
     public void endGame(){
-        String scores = tallyScores();
-        String[] endScores = tallyScores().split(" ");
+
+        int highScorePlayer = 0;
+
+        int highScore = 0;
+
+        for (int i = 0; i < scores.length; i++){
+            if (scores[i] > highScore){
+                highScore = scores[i];
+                highScorePlayer = i;
+            }
+        }
+
     }
 
     @Override
