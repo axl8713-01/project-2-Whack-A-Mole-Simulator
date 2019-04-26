@@ -33,17 +33,14 @@ public class WAMGame implements Runnable {
     private Mole[] moles;
 
 
-
-
-
-    public WAMGame(int rows, int cols, int duration, WAMPlayer... players){
+    public WAMGame(int rows, int cols, int duration, WAMPlayer... players) {
 
         this.rows = rows;
         this.cols = cols;
         this.duration = duration;
         this.players = players;
         this.scores = new Integer[players.length];
-        this.numMoles = rows*cols;
+        this.numMoles = rows * cols;
         this.moles = startHiding();
 //        this.game = new WAM(this.rows, this.cols);
 
@@ -52,18 +49,19 @@ public class WAMGame implements Runnable {
     }
 
 
-    public synchronized void score(String scoreMsg)throws WAMException{
-        String[] ids = scoreMsg.split(" ");
+    public synchronized void score(String scoreMsg) throws WAMException {
 
-        if(moles[Integer.parseInt(ids[0])].getStatus()){
-            scores[Integer.parseInt(ids[1])] += 2;
-            this.hide(Integer.parseInt(ids[0]));
-        }
-        else {
-            scores[Integer.parseInt(ids[1])] -= 1;
-        }
-        for (WAMPlayer player: players){
-            player.sendScores(tallyScores());
+        if (scoreMsg != "") {
+            String[] ids = scoreMsg.split(" ");
+            if (moles[Integer.parseInt(ids[0])].getStatus()) {
+                scores[Integer.parseInt(ids[1])] += 2;
+                this.hide(Integer.parseInt(ids[0]));
+            } else {
+                scores[Integer.parseInt(ids[1])] -= 1;
+            }
+            for (WAMPlayer player : players) {
+                player.sendScores(tallyScores());
+            }
         }
     }
 
@@ -76,10 +74,10 @@ public class WAMGame implements Runnable {
         return moles;
     }
 
-    public String tallyScores(){
+    public String tallyScores() {
         StringBuilder scores = new StringBuilder();
         scores.append(SCORE);
-        for (int i = 0; i<players.length; i++){
+        for (int i = 0; i < players.length; i++) {
             scores.append(" ");
             scores.append(this.scores[i]);
         }
@@ -87,49 +85,37 @@ public class WAMGame implements Runnable {
         return scoreboard;
     }
 
-    public synchronized void popUp(int id)throws WAMException{
-        for (WAMPlayer player: players){
+    public synchronized void popUp(int id) throws WAMException {
+        for (WAMPlayer player : players) {
             String moleUp = player.moleUp(id);
             score(moleUp);
         }
     }
 
-    public synchronized void hide (int id) throws WAMException{
+    public synchronized void hide(int id) throws WAMException {
         moles[id].down();
-        for (WAMPlayer player : players){
+        for (WAMPlayer player : players) {
             player.moleDown(id);
         }
     }
 
+
+    public void endGame(){
+        String scores = tallyScores();
+        String[] endScores = tallyScores().split(" ");
+    }
+
     @Override
-    public void run(){
+    public void run() {
+        while (RUNNING) {
 
-//        boolean running = true;
-        while(RUNNING){
-            int currentTimeElapsed = 0;
-            for (WAMPlayer player : players){
-//                    player.score();
-                try {
-                    player.close();
-                }catch (Exception e){}
-            }
-            if (currentTimeElapsed >= duration){
-                RUNNING=false;
-            }
-            currentTimeElapsed++;
         }
+
     }
-
-    private boolean timeUp(){
-            int startTime = 0;
-            while (startTime<duration){
-                startTime++;
-            }
-        return false;
-    }
-
-
-
-
-
 }
+
+
+
+
+
+

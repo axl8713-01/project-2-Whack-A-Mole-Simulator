@@ -70,6 +70,7 @@ public class WAMServer extends Thread implements WAMProtocol {
             WAMGame game = new WAMGame(rows, col, duration, WAMPlayers);//implement game logic
             new Thread(game).run();//implement game thread here
             this.sleep(duration*1000);
+            game.RUNNING=false;
         }catch (IOException e){ System.err.println("Invalid IO");}
         catch (InterruptedException ie){ this.interrupt(); }
 //        catch (WAMException we){

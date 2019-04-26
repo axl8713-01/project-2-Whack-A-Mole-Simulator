@@ -68,7 +68,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
                 }
             }
             else {
-                networkOut.println(ERROR + "Whack not received");
+                error();
 
 //                throw new WAMException("Something went wrong" + whack);
             }
