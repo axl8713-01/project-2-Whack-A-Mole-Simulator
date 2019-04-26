@@ -28,14 +28,14 @@ public class WAM {
 
     }
 
-    public Mole[] startHiding() {
-        Mole[] moles = new Mole[numMoles];
-        for (int i = 0; i < numMoles; i++) {
-            moles[i] = new Mole(i);
-            moles[i].start();
-        }
-        return moles;
-    }
+//    public Mole[] startHiding() {
+//        Mole[] moles = new Mole[numMoles];
+//        for (int i = 0; i < numMoles; i++) {
+//            moles[i] = new Mole(i);
+//            moles[i].start();
+//        }
+//        return moles;
+//    }
 
 
 

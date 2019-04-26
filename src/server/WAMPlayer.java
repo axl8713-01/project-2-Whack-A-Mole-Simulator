@@ -56,20 +56,24 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
      */
     public synchronized String moleUp(int moleNum) throws WAMException{
         networkOut.println(MOLE_UP + moleNum);
-        String whack = networkIn.nextLine();
-
-        if (whack.startsWith(WHACK)){
-            String[] tokens = whack.split(" ");
-            if(tokens.length == 3){
-                return tokens[1] + tokens[2];
+        if (networkIn.hasNextLine()) {
+            String whack = networkIn.nextLine();
+            if (whack.startsWith(WHACK)){
+                String[] tokens = whack.split(" ");
+                if(tokens.length == 3){
+                    return tokens[1] + tokens[2];
+                }
+                else {
+                    throw new WAMException("Something went wrong" + whack);
+                }
             }
             else {
-                throw new WAMException("Something went wrong" + whack);
+                networkOut.println(ERROR + "Whack not received");
+
+//                throw new WAMException("Something went wrong" + whack);
             }
         }
-        else {
-            throw new WAMException("Something went wrong" + whack);
-        }
+        return "";
     }
 
 //    public synchronized void moleDown(int moleNum){
@@ -99,8 +103,6 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
             if (!this.gameOn) {
                 break;
             }
-            String[] whack = networkIn.nextLine().split(" ");
-
         }
         close();
     }

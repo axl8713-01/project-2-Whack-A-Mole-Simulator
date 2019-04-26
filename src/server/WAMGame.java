@@ -21,6 +21,7 @@ public class WAMGame implements Runnable {
 
     private int duration;
 
+    public boolean RUNNING = true;
 //    private WAM game;
 
     private WAMPlayer[] players;
@@ -51,15 +52,16 @@ public class WAMGame implements Runnable {
     }
 
 
-    public synchronized void score(String scoreMsg){
-        String[]
-        if(moles[moleNum].getStatus()){
-            scores[playerNum] += 2;
+    public synchronized void score(String scoreMsg)throws WAMException{
+        String[] ids = scoreMsg.split(" ");
+
+        if(moles[Integer.parseInt(ids[0])].getStatus()){
+            scores[Integer.parseInt(ids[1])] += 2;
+            this.hide(Integer.parseInt(ids[0]));
         }
         else {
-            scores[playerNum] -= 1;
+            scores[Integer.parseInt(ids[1])] -= 1;
         }
-
         for (WAMPlayer player: players){
             player.sendScores(tallyScores());
         }
@@ -87,22 +89,23 @@ public class WAMGame implements Runnable {
 
     public synchronized void popUp(int id)throws WAMException{
         for (WAMPlayer player: players){
-            String moleup = player.moleUp(id);
-            score(moleup);
+            String moleUp = player.moleUp(id);
+            score(moleUp);
         }
     }
 
     public synchronized void hide (int id) throws WAMException{
+        moles[id].down();
         for (WAMPlayer player : players){
-
+            player.moleDown(id);
         }
     }
 
     @Override
     public void run(){
 
-        boolean running = true;
-        while(running){
+//        boolean running = true;
+        while(RUNNING){
             int currentTimeElapsed = 0;
             for (WAMPlayer player : players){
 //                    player.score();
@@ -111,7 +114,7 @@ public class WAMGame implements Runnable {
                 }catch (Exception e){}
             }
             if (currentTimeElapsed >= duration){
-                running=false;
+                RUNNING=false;
             }
             currentTimeElapsed++;
         }
