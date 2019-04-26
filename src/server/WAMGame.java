@@ -3,6 +3,7 @@ package server;
 import common.WAMException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static common.WAMProtocol.SCORE;
 
@@ -102,17 +103,39 @@ public class WAMGame implements Runnable {
 
     public void endGame(){
 
-        int highScorePlayer = 0;
-
         int highScore = 0;
+
+        ArrayList<WAMPlayer> winners = new ArrayList<>();
+
+        ArrayList<WAMPlayer> losers = new ArrayList<>();
 
         for (int i = 0; i < scores.length; i++){
             if (scores[i] > highScore){
                 highScore = scores[i];
-                highScorePlayer = i;
+
             }
         }
 
+        for (int i = 0; i < scores.length; i++){
+            if (scores[i] == highScore){
+                winners.add(players[i]);
+            }
+            else {
+                losers.add(players[i]);
+            }
+        }
+
+        if (winners.size() == 1){
+            winners.get(0).win();
+        }else{
+            for (WAMPlayer player : winners){
+                player.tie();
+            }
+        }
+
+        for (WAMPlayer player : losers){
+            player.lose();
+        }
     }
 
     @Override
@@ -120,7 +143,10 @@ public class WAMGame implements Runnable {
         while (RUNNING) {
 
         }
-
+        endGame();
+        for(WAMPlayer player : players){
+            player.setGameOff();
+        }
     }
 }
 
