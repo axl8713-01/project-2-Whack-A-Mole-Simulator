@@ -171,7 +171,7 @@ public class WAMClient {
      *
      */
     private void run() {
-        while (this.shouldGameProceed()) {
+        while (this.shouldGameProceed() && networkIn.hasNextLine()) {
             try {
                 String proto_msg = this.networkIn.next();// the message from server
                 String args = this.networkIn.nextLine().trim();

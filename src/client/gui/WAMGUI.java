@@ -11,9 +11,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.util.List;
+
+import static javafx.scene.text.FontWeight.BOLD;
 
 
 /**
@@ -40,6 +44,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
 
     private Label score;
 
+    private ImageView img;
     //private ImageView hole=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
     //private ImageView mole=new ImageView(new Image(getClass().getResourceAsStream("mole.png")));
 
@@ -96,10 +101,13 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
      */
     public void createGUI(){
         GridPane gridPane=makeGridPane();
-        status=new Label();
-        score=new Label();
-        HBox hBox=new HBox(status, score);
-        VBox vBox=new VBox(hBox, gridPane);
+        this.status=new Label();
+        this.score=new Label();
+        this.img=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
+        this.img.setFitWidth(150);
+        this.img.setFitHeight(150);
+        //HBox hBox=new HBox(status, score);
+        VBox vBox=new VBox(status, gridPane, score);
         Scene scene=new Scene(vBox);
         stage.setTitle(" Whack A Mole!");
         stage.setScene(scene);
@@ -119,8 +127,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             for(int j=0; j<board.ROWS; j++){
                 Button button=new Button();
                 button.setPrefSize(150,150);
-                button.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-               // button.setGraphic(hole);
+                //button.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                button.setGraphic(this.img);
                 gridPane.add(button, i,j);
             }
         }
@@ -146,8 +154,11 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                 Button b = new Button();
                 b.setPrefSize(150,150);
                 if (this.board.getMoleHole(i, j)) {//if true, mole is up
-                    b.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-                   // b.setGraphic(mole);
+                    //b.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+                    this.img=new ImageView(new Image(getClass().getResourceAsStream("mole.png")));
+                    img.setFitWidth(150);
+                    img.setFitHeight(150);
+                    b.setGraphic(img);
                     b.setOnAction(actionEvent -> {
                         client.Whacked(finalJ, finalI);
                         this.score.setText(this.board.score);
@@ -155,8 +166,11 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                     gridPane.add(b, i, j);
                 }
                 else {//else mole is down
-                    b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-                  //  b.setGraphic(hole);
+                    //b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+                    this.img=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
+                    img.setFitWidth(150);
+                    img.setFitHeight(150);
+                    b.setGraphic(this.img);
                     b.setOnAction(actionEvent -> {
                        client.Whacked(finalJ,finalI);
                        this.score.setText(this.board.score);
@@ -166,7 +180,21 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             }
         }
         if(!this.board.proceed){
-            status.setText(board.result+"");
+            switch(board.result){
+                case TIE:
+                    this.status.setText("TIED GAME!");
+                    //this.status.setFont(new Font("Times New Roman", BOLD, 20));
+                    break;
+                case WON:
+                    status.setText("YOU WIN!");
+                    break;
+                case LOST:
+                    status.setText("YOU LOSE!");
+                    break;
+                default:
+                    status.setText("OOPS, ERROR!");
+                    break;
+            }
         }
         }
 
