@@ -21,7 +21,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     private Socket clientSocket;
     private Scanner networkIn;
     private PrintStream networkOut;
-    private boolean gameOn;
+    private boolean gameOn=true;
 
 
 
@@ -114,13 +114,16 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
 
     @Override
     public void run() {
-        while (true) {
-            if (!this.gameOn) {
-                break;
-            }
+        while (gameOn) {
+
         }
         close();
     }
+
+    public void setGameOff(){
+        this.gameOn=false;
+    }
+
     @Override
     public void close(){
         try {
