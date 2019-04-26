@@ -88,6 +88,21 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         networkOut.println(scoreBoard);
     }
 
+    public void win(){
+        networkOut.println(WAMProtocol.GAME_WON);
+        this.close();
+    }
+
+    public void lose(){
+        networkOut.println(WAMProtocol.GAME_LOST);
+        this.close();
+    }
+
+    public void tie(){
+        networkOut.println(WAMProtocol.GAME_TIED);
+        this.close();
+    }
+
     public void error(){
         networkOut.println(ERROR);
         this.close();
