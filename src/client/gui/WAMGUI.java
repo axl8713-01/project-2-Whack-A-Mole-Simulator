@@ -106,6 +106,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
         }
         str.trim();
         this.score.setText(str);
+        this.score.setFont(new Font("Times New Roman", 24));
         this.score.setAlignment(Pos.CENTER);
         this.img=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
         this.img.setFitWidth(150);
