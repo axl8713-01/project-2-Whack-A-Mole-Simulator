@@ -185,16 +185,19 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             switch(board.result){
                 case TIE:
                     this.status.setText("TIED GAME!");
-                    //this.status.setFont(new Font("Times New Roman", BOLD, 20));
+                    this.status.setFont(new Font("Times New Roman", 18));
                     break;
                 case WON:
                     status.setText("YOU WIN!");
+                    this.status.setFont(new Font("Times New Roman", 18));
                     break;
                 case LOST:
                     status.setText("YOU LOSE!");
+                    this.status.setFont(new Font("Times New Roman", 18));
                     break;
                 default:
                     status.setText("OOPS, ERROR!");
+                    this.status.setFont(new Font("Times New Roman", 18));
                     break;
             }
         }
