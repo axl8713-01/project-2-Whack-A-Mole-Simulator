@@ -89,7 +89,6 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
      */
     public void start(Stage stage){
         this.stage=stage;
-       // client.startListener();
     }
 
 
@@ -100,14 +99,12 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
      *
      */
     public void createGUI(){
-        System.out.println("AJSNJSJCBJ");
         GridPane gridPane=makeGridPane();
         this.status=new Label();
         this.score=new Label();
         this.img=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
         this.img.setFitWidth(150);
         this.img.setFitHeight(150);
-        //HBox hBox=new HBox(status, score);
         VBox vBox=new VBox(status, gridPane, score);
         Scene scene=new Scene(vBox);
         stage.setTitle(" Whack A Mole!");
@@ -129,7 +126,6 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             for(int j=0; j<board.ROWS; j++){
                 Button button=new Button();
                 button.setPrefSize(150,150);
-                //button.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
                 button.setGraphic(this.img);
                 gridPane.add(button, i,j);
             }
@@ -156,7 +152,6 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                 Button b = new Button();
                 b.setPrefSize(150,150);
                 if (this.board.getMoleHole(i, j)) {//if true, mole is up
-                    //b.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
                     this.img=new ImageView(new Image(getClass().getResourceAsStream("mole.png")));
                     img.setFitWidth(150);
                     img.setFitHeight(150);
@@ -164,11 +159,12 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                     b.setOnAction(actionEvent -> {
                         client.Whacked(finalJ, finalI);
                         this.score.setText(this.board.score);
+                        this.score.setFont(new Font("Times New Roman", 24));
+
                     });
                     gridPane.add(b, i, j);
                 }
                 else {//else mole is down
-                    //b.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
                     this.img=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
                     img.setFitWidth(150);
                     img.setFitHeight(150);
@@ -176,6 +172,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                     b.setOnAction(actionEvent -> {
                        client.Whacked(finalJ,finalI);
                        this.score.setText(this.board.score);
+                       this.score.setFont(new Font("Times New Roman", 24));
                     });
                     gridPane.add(b, i, j);
                 }
@@ -185,19 +182,19 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             switch(board.result){
                 case TIE:
                     this.status.setText("TIED GAME!");
-                    this.status.setFont(new Font("Times New Roman", 18));
+                    this.status.setFont(new Font("Times New Roman", 20));
                     break;
                 case WON:
                     status.setText("YOU WIN!");
-                    this.status.setFont(new Font("Times New Roman", 18));
+                    this.status.setFont(new Font("Times New Roman", 20));
                     break;
                 case LOST:
                     status.setText("YOU LOSE!");
-                    this.status.setFont(new Font("Times New Roman", 18));
+                    this.status.setFont(new Font("Times New Roman", 20));
                     break;
                 default:
                     status.setText("OOPS, ERROR!");
-                    this.status.setFont(new Font("Times New Roman", 18));
+                    this.status.setFont(new Font("Times New Roman", 20));
                     break;
             }
         }
