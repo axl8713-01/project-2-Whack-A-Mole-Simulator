@@ -147,7 +147,7 @@ public class WAMClient {
      */
     public void error( String err_msg ) {
         System.out.println(" ERROR: " + err_msg );
-        this.board.error( err_msg );
+        this.board.error();
         this.stop();
     }
 

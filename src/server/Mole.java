@@ -4,6 +4,13 @@ import common.WAMException;
 
 import java.util.Random;
 
+/**
+ * Mole represents a single mole in the game.
+ *
+ * @author Liang, Albin
+ * @author D'Souza, Saakshi
+ */
+
 public class Mole extends Thread{
 
     //the minimum time the mole can be up
