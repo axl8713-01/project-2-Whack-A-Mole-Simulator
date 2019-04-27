@@ -38,27 +38,27 @@ public class Mole extends Thread{
 
     public boolean getStatus(){return this.up;}
 
-//    public void up(){
-//        this.up = true;
-//    }
-
     public void down()throws WAMException{
         this.up = false ;
     }
 
     public int getRandomTime(int min, int max) {return rng.nextInt(max-min + 1 ) + min;}
 
+    private void hideOrAppear(int minDownTime, int maxDownTime, boolean upOrDown) throws InterruptedException, WAMException{
+        if (!up == upOrDown) {
+            this.up = upOrDown;
+        }
+        this.sleep(getRandomTime(minDownTime, maxDownTime)*1000);
+    }
+
     @Override
     public void run(){
         while (game.RUNNING) {
             try {
-                this.sleep(getRandomTime(MINDOWNTIME, MAXDOWNTIME)*1000);
-                this.up = true;
+                this.hideOrAppear(MINDOWNTIME,MAXDOWNTIME, false);
                 game.popUp(this.getID());
-                this.sleep(getRandomTime(MINUPTIME, MAXUPTIME)*1000);
-                this.up = false;
-                this.game.hide(this.getID());
-
+                this.hideOrAppear(MINUPTIME,MAXUPTIME,true);
+                game.hide(this.getID());
             } catch (InterruptedException ie) {}
             catch (WAMException we){}
         }
