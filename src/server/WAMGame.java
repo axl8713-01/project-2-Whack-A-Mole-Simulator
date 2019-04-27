@@ -118,7 +118,6 @@ public class WAMGame extends Thread {
     }
 
     public void endGame() {
-
         int highScore=scores[0];
 
         ArrayList<WAMPlayer> winners = new ArrayList<>();

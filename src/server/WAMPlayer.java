@@ -70,7 +70,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     }
 
 
-    public void sendScores(String scoreBoard){
+    public synchronized void sendScores(String scoreBoard){
         networkOut.println(scoreBoard);
     }
 
