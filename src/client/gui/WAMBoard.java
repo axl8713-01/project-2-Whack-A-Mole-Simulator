@@ -9,7 +9,7 @@ import java.util.List;
  * controller from the server.
  *
  *
- * @author Souza, Saakshi
+ * @author D'Souza, Saakshi
  * @author Liang, Albin
  */
 
@@ -24,10 +24,7 @@ public class WAMBoard {
         TIE,
         ERROR
     }
-    /**public enum Status{
-     WHACKED,
-     NOT_WHACKED
-     }*/
+
 
     //The individual mole holes
     public boolean[][] board;
@@ -41,8 +38,10 @@ public class WAMBoard {
     //the results that end the game.
     public Result result;
 
+    //the score of all the players
     public String score;
 
+    //a variable to check if the game is on or not
     public boolean proceed=true;
 
     //the list of observers, in this case the WAMGUI.
@@ -175,18 +174,28 @@ public class WAMBoard {
         alert();
     }
 
+    /**
+     * lostGame is called when the game is lost and lets the observers know.
+     */
     public void lostGame() {
         this.result = Result.LOST;
         this.proceed=false;
         alert();
     }
 
+    /**
+     * tiedGame is called when the game is tied and lets the observers know.
+     */
     public void tiedGame() {
         this.result = Result.TIE;
         this.proceed=false;
         alert();
     }
-    public void error(String err_msg){
+
+    /**
+     * error is called when there was an error in the game and lets the observers know.
+     */
+    public void error(){
      this.result = Result.ERROR;
      this.proceed=false;
      alert();
@@ -197,7 +206,7 @@ public class WAMBoard {
     }
 
     /**
-     * close out the model, and alert the view one last time.
+     * close out the model, and alerts the view one last time.
      *
      */
     public void close() {

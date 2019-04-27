@@ -13,7 +13,7 @@ import java.util.Scanner;
  * WAMClient is the controller of the MVC design pattern, it deals with communication between the view and server
  * and server to model.
  *
- * @author Souza, Saakshi
+ * @author D'Souza, Saakshi
  * @author Liang, Albin
  */
 
@@ -34,8 +34,10 @@ public class WAMClient {
     //the model that is observed by the view.
     private WAMBoard board;
 
+    //the current player number that is sent from the server
     private int player_num;
 
+    //the number of players that is sent from the server
     private int num_of_players;
 
     /**
@@ -69,6 +71,10 @@ public class WAMClient {
         }
     }
 
+    /**
+     * A getter function that gets the number of players sent from the server
+     * @return the total number of players playing the game
+     */
     public int get_num_play(){
         return this.num_of_players;
     }
@@ -222,11 +228,19 @@ public class WAMClient {
         this.close();
     }
 
-
-public void sendScore(String score){
+    /**
+     * Send the score recieved from the server to the board for updating
+     * @param score the string containing the updated scores from the server
+     */
+    public void sendScore(String score){
         this.board.getScore(score);
 }
 
+    /**
+     * sends server the whack message along with the mole number and the player number who whacked it
+     * @param row the row number of the mole
+     * @param col the column number of the mole
+     */
     public void Whacked(int row, int col){
             networkOut.println(WAMProtocol.WHACK+" "+board.getMoleNum(row, col)+" "+player_num);
             networkOut.flush();

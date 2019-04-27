@@ -14,7 +14,7 @@ import java.util.Scanner;
  *  game.
  *
  * @author Liang, Albin
- * @author Souza, Saakshi
+ * @author D'Souza, Saakshi
  */
 
 public class WAMPlayer extends Thread implements WAMProtocol, Closeable {

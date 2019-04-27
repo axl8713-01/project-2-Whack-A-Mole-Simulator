@@ -11,7 +11,7 @@ import java.net.Socket;
  * players and the duration of the game.
  *
  * @author Liang, Albin
- * @author Souza, Saakshi
+ * @author D'Souza, Saakshi
  */
 
 public class WAMServer extends Thread implements WAMProtocol {

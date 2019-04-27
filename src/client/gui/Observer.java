@@ -7,7 +7,7 @@ package client.gui;
  * @param <Subject> the type of object an implementor of this interface
  *                is observing
  * @author RIT CS
- * @author Souza, Saakshi
+ * @author D'Souza, Saakshi
  * @author Liang, Albin
  */
 public interface Observer< Subject > {

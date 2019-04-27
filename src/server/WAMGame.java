@@ -12,7 +12,7 @@ import static java.lang.Thread.sleep;
  * The thread that handles all the game logic, keeps track of the time for the game, and handles all the moles.
  *
  * @author Liang, Albin
- * @author Souza, Saakshi
+ * @author D'Souza, Saakshi
  */
 
 

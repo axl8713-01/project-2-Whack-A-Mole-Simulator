@@ -1,7 +1,6 @@
 package client.gui;
 
 import common.WAMException;
-import common.WAMProtocol;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -11,11 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.List;
 
 
@@ -38,14 +35,14 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
     //gridPane is used as the backbone of the drawing the user can see.
     private GridPane gridPane;
 
-    //status is a label to represent the status of the game(currently just a placeholder)
+    //status is a label to represent the status of the game
     private Label status;
 
+    //score is a label to represent the score of all the players playing the game
     private Label score;
 
+    //img holds the image- either the hole or the mole -which keeps changing once a button is pressed.
     private ImageView img;
-    //private ImageView hole=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
-    //private ImageView mole=new ImageView(new Image(getClass().getResourceAsStream("mole.png")));
 
     //created is used to tell if the board has been created or not initially.
     private boolean created=false;
@@ -213,12 +210,6 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
         }
 
 
-    /**
-     * endgame wakes up all the other threads after the game has ended. Placeholder currently*
-     */
-    public void endGame(){
-        this.notifyAll();
-    }
 
 
     /**
