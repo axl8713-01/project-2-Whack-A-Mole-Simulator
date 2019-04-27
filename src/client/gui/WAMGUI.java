@@ -100,6 +100,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
      *
      */
     public void createGUI(){
+        System.out.println("AJSNJSJCBJ");
         GridPane gridPane=makeGridPane();
         this.status=new Label();
         this.score=new Label();
@@ -111,7 +112,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
         Scene scene=new Scene(vBox);
         stage.setTitle(" Whack A Mole!");
         stage.setScene(scene);
-        stage.setMinWidth(500);
+        stage.setMinWidth(800);
+        stage.setMinHeight(800);
         stage.show();
     }
 

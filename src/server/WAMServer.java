@@ -54,7 +54,6 @@ public class WAMServer extends Thread implements WAMProtocol {
         serverThread.start();
 
 
-
     }
     @Override
     public void run(){
@@ -68,11 +67,10 @@ public class WAMServer extends Thread implements WAMProtocol {
                 player.startListening();
             }
             WAMGame game = new WAMGame(rows, col, duration, WAMPlayers);//implement game logic
-            new Thread(game).run();//implement game thread here
-            this.sleep(duration*1000);
-            game.RUNNING=false;
+            new Thread(game).start();//implement game thread here
+
         }catch (IOException e){ System.err.println("Invalid IO");}
-        catch (InterruptedException ie){ this.interrupt(); }
+        //catch (InterruptedException ie){ this.interrupt(); }
 //        catch (WAMException we){
 //            System.err.println("Something has gone horrible awry.");
 //            we.printStackTrace();

@@ -44,7 +44,6 @@ public class Mole extends Thread{
 
     public void down()throws WAMException{
         this.up = false ;
-        game.hide(this.getID());
     }
 
     public int getRandomTime(int min, int max) {return rng.nextInt(max-min + 1 ) + min;}
@@ -53,10 +52,10 @@ public class Mole extends Thread{
     public void run(){
         while (game.RUNNING) {
             try {
-                this.sleep(getRandomTime(MINDOWNTIME, MAXDOWNTIME));
+                this.sleep(getRandomTime(MINDOWNTIME, MAXDOWNTIME)*1000);
                 this.up = true;
                 game.popUp(this.getID());
-                this.sleep(getRandomTime(MINUPTIME, MAXUPTIME));
+                this.sleep(getRandomTime(MINUPTIME, MAXUPTIME)*1000);
                 this.up = false;
                 this.game.hide(this.getID());
 

@@ -22,6 +22,7 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
     private Scanner networkIn;
     private PrintStream networkOut;
     private boolean gameOn=true;
+    private WAMGame game;
 
 
 
@@ -49,38 +50,23 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         networkOut.println(WELCOME + " " + rows + " " + columns + " " + players + " " + playerNum);
     }
 
+    public void start(WAMGame game){
+        this.game = game;
+    }
     /**
      * mole Up is the server informing the clients that a mole has come out of it's hole.
      *
      * @param moleNum The unique number of the mole that came up.
      */
-    public synchronized String moleUp(int moleNum) throws WAMException{
-        networkOut.println(MOLE_UP + moleNum);
-        if (networkIn.hasNextLine()) {
-            String whack = networkIn.nextLine();
-            if (whack.startsWith(WHACK)){
-                String[] tokens = whack.split(" ");
-                if(tokens.length == 3){
-                    return tokens[1] + tokens[2];
-                }
-                else {
-                    throw new WAMException("Something went wrong" + whack);
-                }
-            }
-            else {
-                error();
-
-//                throw new WAMException("Something went wrong" + whack);
-            }
-        }
-        return "";
+    public void moleUp(int moleNum) throws WAMException{
+        networkOut.println(MOLE_UP + " " + moleNum);
     }
 
 //    public synchronized void moleDown(int moleNum){
 //        networkOut.println(MOLE_DOWN + moleNum);
 //    }
-    public synchronized void moleDown(int moleNum)throws WAMException{
-        networkOut.println(MOLE_DOWN + moleNum);
+    public void moleDown(int moleNum)throws WAMException{
+        networkOut.println(MOLE_DOWN + " " + moleNum);
     }
 
 
@@ -108,13 +94,30 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
         this.close();
     }
 
+
+
+
     public void startListening(){ new Thread(() -> this.run()).start();}
-
-
 
     @Override
     public void run() {
         while (gameOn) {
+            if (networkIn.hasNextLine()) {
+                String whack = networkIn.nextLine();
+                if (whack.startsWith(WHACK)){
+                    String[] tokens = whack.split(" ");
+                    if(tokens.length == 3){
+                       try {
+                           game.score(tokens[1] +" "+ tokens[2]);
+                       }catch (WAMException we){}
+                    }
+                }
+                else {
+                    error();
+
+//                throw new WAMException("Something went wrong" + whack);
+                }
+            }
 
         }
         close();

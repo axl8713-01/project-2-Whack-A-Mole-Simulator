@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static common.WAMProtocol.SCORE;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -14,7 +15,7 @@ import static common.WAMProtocol.SCORE;
  */
 
 
-public class WAMGame implements Runnable {
+public class WAMGame extends Thread {
 
     private int rows;
 
@@ -27,7 +28,7 @@ public class WAMGame implements Runnable {
 
     private WAMPlayer[] players;
 
-    private Integer[] scores;
+    private int[] scores;
 
     private int numMoles;
 
@@ -40,9 +41,13 @@ public class WAMGame implements Runnable {
         this.cols = cols;
         this.duration = duration;
         this.players = players;
-        this.scores = new Integer[players.length];
+        for (WAMPlayer player : players){
+            player.start(this);
+        }
+        this.scores = new int[players.length];
         this.numMoles = rows * cols;
-        this.moles = startHiding();
+        Mole[] moles = new Mole[numMoles];
+        this.moles = moles;
 //        this.game = new WAM(this.rows, this.cols);
 
 //        this.moles = game.startHiding();
@@ -53,26 +58,34 @@ public class WAMGame implements Runnable {
     public synchronized void score(String scoreMsg) throws WAMException {
 
         if (scoreMsg != "") {
-            String[] ids = scoreMsg.split(" ");
-            if (moles[Integer.parseInt(ids[0])].getStatus()) {
-                scores[Integer.parseInt(ids[1])] += 2;
-                this.hide(Integer.parseInt(ids[0]));
+            String[] score = scoreMsg.split(" ");
+            int id=Integer.valueOf(score[0]);
+
+            int p_no=Integer.valueOf(score[1]);
+
+            if (moles[id].getStatus()) {
+                scores[p_no] += 2;
+                for (WAMPlayer player : players) {
+                    player.sendScores(tallyScores());
+                }
+                this.hide(id);
             } else {
-                scores[Integer.parseInt(ids[1])] -= 1;
+                scores[p_no] -= 1;
+                for (WAMPlayer player : players) {
+                    player.sendScores(tallyScores());
+                }
+
             }
-            for (WAMPlayer player : players) {
-                player.sendScores(tallyScores());
-            }
+
         }
     }
 
-    public Mole[] startHiding() {
-        Mole[] moles = new Mole[numMoles];
+    public void startHiding() {
         for (int i = 0; i < numMoles; i++) {
             moles[i] = new Mole(i, this);
+            System.out.println("mole" + i);
             moles[i].start();
         }
-        return moles;
     }
 
     public String tallyScores() {
@@ -88,8 +101,8 @@ public class WAMGame implements Runnable {
 
     public synchronized void popUp(int id) throws WAMException {
         for (WAMPlayer player : players) {
-            String moleUp = player.moleUp(id);
-            score(moleUp);
+            player.moleUp(id);
+            // score(moleUp);
         }
     }
 
@@ -100,53 +113,87 @@ public class WAMGame implements Runnable {
         }
     }
 
+    public void changeState(){
+        this.RUNNING = false;
+    }
 
-    public void endGame(){
+    public void endGame() {
 
-        int highScore = 0;
+        int highScore=scores[0];
 
         ArrayList<WAMPlayer> winners = new ArrayList<>();
 
         ArrayList<WAMPlayer> losers = new ArrayList<>();
 
-        for (int i = 0; i < scores.length; i++){
-            if (scores[i] > highScore){
+        for (int i = 0; i < scores.length; i++) {
+            if (scores[i] > highScore) {
                 highScore = scores[i];
 
             }
         }
 
-        for (int i = 0; i < scores.length; i++){
-            if (scores[i] == highScore){
+        for (int i = 0; i < scores.length; i++) {
+            if (scores[i] == highScore) {
                 winners.add(players[i]);
-            }
-            else {
+            } else {
                 losers.add(players[i]);
             }
         }
 
-        if (winners.size() == 1){
+        if (winners.size() == 1) {
             winners.get(0).win();
-        }else{
-            for (WAMPlayer player : winners){
+        } else {
+            for (WAMPlayer player : winners) {
                 player.tie();
             }
         }
 
-        for (WAMPlayer player : losers){
+        for (WAMPlayer player : losers) {
             player.lose();
         }
+
+
     }
+
+//    public void startTime() {
+//        Thread timerThread = new Thread(() -> {
+//            try {
+//                sleep(duration * 1000);
+//            } catch (InterruptedException ie) {
+//            }
+//        });
+//        Thread endTimer = new Thread(() -> {
+//            try {
+//                timerThread.join();
+//                changeState();
+//            } catch (InterruptedException ie) {
+//            }
+//        });
+//        timerThread.start();
+//        endTimer.start();
+//    }
+
+
 
     @Override
     public void run() {
-        while (RUNNING) {
+        startHiding();
+       // startTime();
+                Thread timerThread = new Thread(() -> {
+                    try {
+                        sleep(duration * 1000);
+                            } catch (InterruptedException ie) {
+                        }
+                    });
 
-        }
-        endGame();
-        for(WAMPlayer player : players){
-            player.setGameOff();
-        }
+                    timerThread.start();
+                    try{
+                    timerThread.join();} catch(InterruptedException ie){}
+            endGame();
+         for (WAMPlayer player : players) {
+             player.setGameOff();
+         }
+         System.out.println("END");
     }
 }
 
