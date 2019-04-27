@@ -4,6 +4,7 @@ import common.WAMException;
 import common.WAMProtocol;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,8 +17,6 @@ import javafx.stage.Stage;
 
 import java.awt.*;
 import java.util.List;
-
-import static javafx.scene.text.FontWeight.BOLD;
 
 
 /**
@@ -67,7 +66,6 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
             List<String> args = getParameters().getRaw();//retrieve the command line arguments from main.
             String host = args.get(0); //the host name is provided.
             int port = Integer.parseInt(args.get(1));//the port number is the 2nd indexed argument
-
             this.board=new WAMBoard();//create a new board
             this.board.addObserver(this); //add itself to the board as an observer
             client=new WAMClient(host, port, this.board);//start up the controller
@@ -102,6 +100,13 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
         GridPane gridPane=makeGridPane();
         this.status=new Label();
         this.score=new Label();
+        String str="";
+        for(int i=0; i<client.get_num_play(); i++){
+            str+="0 ";
+        }
+        str.trim();
+        this.score.setText(str);
+        this.score.setAlignment(Pos.CENTER);
         this.img=new ImageView(new Image(getClass().getResourceAsStream("hole.png")));
         this.img.setFitWidth(150);
         this.img.setFitHeight(150);
@@ -160,6 +165,7 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                         client.Whacked(finalJ, finalI);
                         this.score.setText(this.board.score);
                         this.score.setFont(new Font("Times New Roman", 24));
+                        this.score.setAlignment(Pos.CENTER);
 
                     });
                     gridPane.add(b, i, j);
@@ -172,7 +178,8 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                     b.setOnAction(actionEvent -> {
                        client.Whacked(finalJ,finalI);
                        this.score.setText(this.board.score);
-                       this.score.setFont(new Font("Times New Roman", 24));
+                        this.score.setFont(new Font("Times New Roman", 24));
+                        this.score.setAlignment(Pos.CENTER);
                     });
                     gridPane.add(b, i, j);
                 }
@@ -183,18 +190,22 @@ public class WAMGUI extends Application implements Observer<WAMBoard> {
                 case TIE:
                     this.status.setText("TIED GAME!");
                     this.status.setFont(new Font("Times New Roman", 20));
+                    this.status.setAlignment(Pos.CENTER);
                     break;
                 case WON:
                     status.setText("YOU WIN!");
                     this.status.setFont(new Font("Times New Roman", 20));
+                    this.status.setAlignment(Pos.CENTER);
                     break;
                 case LOST:
                     status.setText("YOU LOSE!");
                     this.status.setFont(new Font("Times New Roman", 20));
+                    this.status.setAlignment(Pos.CENTER);
                     break;
                 default:
                     status.setText("OOPS, ERROR!");
                     this.status.setFont(new Font("Times New Roman", 20));
+                    this.status.setAlignment(Pos.CENTER);
                     break;
             }
         }

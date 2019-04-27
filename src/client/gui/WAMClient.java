@@ -69,6 +69,11 @@ public class WAMClient {
         }
     }
 
+    public int get_num_play(){
+        return this.num_of_players;
+    }
+
+
     /**
      * simple helper function to check whether the game is still running.
      *
