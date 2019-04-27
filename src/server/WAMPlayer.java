@@ -114,8 +114,6 @@ public class WAMPlayer extends Thread implements WAMProtocol, Closeable {
                 }
                 else {
                     error();
-
-//                throw new WAMException("Something went wrong" + whack);
                 }
             }
 

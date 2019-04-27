@@ -33,6 +33,10 @@ public class WAMServer extends Thread implements WAMProtocol {
         }catch (IOException e){throw new WAMException(e);}
     }
 
+    public void close() throws IOException{
+        server.close();
+    }
+
     public static void main(String[] args) throws IOException, WAMException{
         if (args.length != 5){
             System.out.println("Usage: java WAMServer <game-port#> <#rows> <#columns> <#players> <game-duration-seconds>");
@@ -72,13 +76,10 @@ public class WAMServer extends Thread implements WAMProtocol {
                 sleep(duration*1000);
             }catch (InterruptedException ie){}
         }catch (IOException e){ System.err.println("Invalid IO");}
-        //catch (InterruptedException ie){ this.interrupt(); }
-//        catch (WAMException we){
-//            System.err.println("Something has gone horrible awry.");
-//            we.printStackTrace();
-//            for (WAMPlayer wamPlayers: WAMPlayers) {
-//                wamPlayers.error();
-//            }
+        try {
+            close();
+        }catch (IOException ioe){}
+
         }
 
 

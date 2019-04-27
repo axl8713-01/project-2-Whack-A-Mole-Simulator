@@ -48,10 +48,6 @@ public class WAMGame extends Thread {
         this.numMoles = rows * cols;
         Mole[] moles = new Mole[numMoles];
         this.moles = moles;
-//        this.game = new WAM(this.rows, this.cols);
-
-//        this.moles = game.startHiding();
-
     }
 
 
@@ -102,7 +98,6 @@ public class WAMGame extends Thread {
     public synchronized void popUp(int id) throws WAMException {
         for (WAMPlayer player : players) {
             player.moleUp(id);
-            // score(moleUp);
         }
     }
 
@@ -111,10 +106,6 @@ public class WAMGame extends Thread {
         for (WAMPlayer player : players) {
             player.moleDown(id);
         }
-    }
-
-    public void changeState(){
-        this.RUNNING = false;
     }
 
     public void endGame() {
@@ -154,41 +145,20 @@ public class WAMGame extends Thread {
 
     }
 
-//    public void startTime() {
-//        Thread timerThread = new Thread(() -> {
-//            try {
-//                sleep(duration * 1000);
-//            } catch (InterruptedException ie) {
-//            }
-//        });
-//        Thread endTimer = new Thread(() -> {
-//            try {
-//                timerThread.join();
-//                changeState();
-//            } catch (InterruptedException ie) {
-//            }
-//        });
-//        timerThread.start();
-//        endTimer.start();
-//    }
-
-
-
     @Override
     public void run() {
         startHiding();
-       // startTime();
-                Thread timerThread = new Thread(() -> {
-                    try {
-                        sleep(duration * 1000);
-                            } catch (InterruptedException ie) {
-                        }
-                    });
+        Thread timerThread = new Thread(() -> {
+        try {
+            sleep(duration * 1000);
+                } catch (InterruptedException ie) {
+            }
+        });
 
-                    timerThread.start();
-                    try{
-                    timerThread.join();} catch(InterruptedException ie){}
-            endGame();
+                timerThread.start();
+                try{
+                timerThread.join();} catch(InterruptedException ie){}
+        endGame();
          for (WAMPlayer player : players) {
              player.setGameOff();
          }
